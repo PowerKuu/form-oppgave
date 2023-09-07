@@ -14,6 +14,15 @@
         <p>Navn</p>
         <input type="text" name="name" placeholder="Navn">
 
+
+        <p>Kjønn</p>
+
+        <select name="kjønn">
+            <option value="man">Mann</option>
+            <option value="woman">Kvinne</option>
+            <option value="other">Croissant</option>
+        </select>
+
         <p>Epost</p>
         <input type="email" name="email" placeholder="Epost">
 
@@ -102,7 +111,7 @@
             opacity: 0.5;
         }
 
-        input {
+        input, select {
             padding: 0.5rem;
             font-size: 1rem;
             margin-bottom: 1rem;
