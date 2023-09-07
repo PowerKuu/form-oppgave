@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!--Jeg skriver alt i en fil, jeg hadde brukt <link> og <script defer> i andre tillfelder-->
+</head>
+<body>
+    <h1>Skriv personopplysningene</h1>
+
+    <form id="form">
+        <p>Navn</p>
+        <input type="text" name="name" placeholder="Navn">
+
+        <p>Epost</p>
+        <input type="email" name="email" placeholder="Epost">
+
+        <p>Telefon</p>
+        <input type="number" name="phone" placeholder="Telefon">
+
+        <p>Adresse</p>
+        <input type="text" name="address" placeholder="Adresse">
+
+        <p>Passord</p>
+        <input type="password" name="password" placeholder="Passord">
+
+        <p>Bekreft passord</p>
+        <input type="password" name="confirm_password" placeholder="Bekreft passord">
+        
+        <input type="submit" value="Send data">
+    </form>
+
+    <script>
+        const currentData = localStorage.getItem("data")
+
+        if (currentData) {
+            const data = JSON.parse(currentData)
+            if (data.name) {
+                alert("Hei, " + data.name)
+            }
+        }
+
+        const form = document.getElementById("form")
+
+        function validateForm(data) {
+            if (data.name.length < 3) {
+                return alert("Name must be more than 3 characters")
+            }
+
+            if (data.password.length < 6) {
+                return alert("Password must be more than 6 characters")
+            }
+
+            if (data.password != data.confirm_password) {
+                return alert("Password and confirm password must be same")
+            }
+
+            return true
+        }
+
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault()
+
+            const formData = new FormData(form)
+            const data = Object.fromEntries(formData)
+
+ 
+            if (validateForm(data) == true) {
+                alert("Rikitg! Din data blir lagret i localsotrage og solgt til høyestbydende i Kina")
+                alert(JSON.stringify(data))
+
+                localStorage.setItem("data", JSON.stringify(data))
+            }
+        })
+    </script>
+
+
+    <style>
+        #form {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+            align-items: center;
+            
+            font-family: sans-serif;
+        }
+
+        p {
+            margin: 0;
+            margin-bottom: 0.1rem;
+
+            opacity: 0.5;
+        }
+
+        input {
+            padding: 0.5rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+
+            border-radius: 0.2rem;
+
+            border: solid 1px #000;
+        }
+
+        input[type="submit"] {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+
+            padding: 0.75rem;
+        }
+    </style>
+</body>
+</html>
