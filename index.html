@@ -53,17 +53,41 @@
 
         const form = document.getElementById("form")
 
-        function validateForm(data) {
-            if (data.name.length < 3) {
-                return alert("Name must be more than 3 characters")
-            }
+        function validatePassword(password) {
+            // Passord må være mer enn 3 av disse
+            let passwordValid = 0
 
-            if (data.password.length < 6) {
-                return alert("Password must be more than 6 characters")
+
+            // Passord må være minst 10 tegn
+            if (password.length >= 10 ) passwordValid += 1
+
+            // Passord må ha store og små bokstaver
+            if (
+                password != password.toLowerCase() || 
+                password != password.toUpperCase()
+            ) passwordValid += 1
+
+            // Passord må ha tall
+            if (password.match(/\d+/g)) passwordValid += 1
+
+            // Passord må ha spesialtegn
+            if (password.match(/[^a-zA-Z\d]/g)) passwordValid += 1
+
+            
+            return passwordValid >= 3
+        }
+
+        function validateForm(data) {
+            if (!validatePassword(data.password)) {
+                return alert("Meet 3 of the requirments: Password must atleast 10 characters, have at least 1 number, 1 special character and vary between upper and lower case")
             }
 
             if (data.password != data.confirm_password) {
                 return alert("Password and confirm password must be same")
+            }
+
+            if (data.name.length < 3) {
+                return alert("Name must be more than 3 characters")
             }
 
             return true
@@ -81,9 +105,34 @@
                 alert("Rikitg! Din data blir lagret i localsotrage og solgt til høyestbydende i Kina")
                 alert(JSON.stringify(data))
 
+                for (const key in data) {
+                    console.log(key, data[key])
+                }
+
                 localStorage.setItem("data", JSON.stringify(data))
             }
         })
+
+
+
+        // Create tests cases for validatePassword function
+
+        const passwords = [
+            { password: "Password123!", expected: true },
+            { password: "MySecurePassword!", expected: true },
+            { password: "1234567890aA!", expected: true },
+            { password: "P@ssword123", expected: true },
+
+            { password: "12345678!", expected: false },
+            { password: "MyPassword", expected: false },
+            { password: "Secure!", expected: false },
+            { password: "pA!!!!!", expected: false }
+        ]
+
+        for (const { password, expected } of passwords) {
+            const result = validatePassword(password)
+            console.assert(result === expected, `Expected ${expected}, but got ${result} for password ${password}`)
+        }
     </script>
 
     <style>
